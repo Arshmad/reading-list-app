@@ -10,23 +10,11 @@ import {
     TableHeader,
     TableRow,
   } from "@/components/ui/table"
-  
-export type Book = {
-    key: string
-    title: string
-    author_name: string[]
-    first_publish_year: string
-    number_of_pages_median: string | null
-    status: "done" | "inProgress" | "backlog"
-}
+import { Book, useStore } from '@/store'
 
-export const BookSearch = (
+export const BookSearch = () => {
 
-    //this is a arrow function that will take in a parameter of book
-    //with a type of book and will return void
-    {onAddBook,}: {onAddBook : (book: Book) => void}
-
-) => {
+    const {books, addBook} = useStore ((state)=>state)
 
     //This is the query that we type into the search bar
     //query is the result from the input
@@ -134,7 +122,8 @@ export const BookSearch = (
             </div>
 
             <div className="nt-4 max-h-64 overflow-auto">
-                <Table>
+                {query.length>0 && results.length>0?(
+                    <Table>
                     <TableHeader>
                         <TableRow>
                         <TableHead className="p-2">Title</TableHead>
@@ -155,7 +144,7 @@ export const BookSearch = (
                                     <Button
                                         variant="link"
                                         onClick={
-                                            () => { onAddBook({
+                                            () => { addBook({
                                                 key: book.title,
                                                 title: book.title,
                                                 author_name: book.author_name,
@@ -164,12 +153,19 @@ export const BookSearch = (
                                                 status: "backlog"
                                             }) }
                                         }
+                                        disabled={books.some((b) => b.key == book.key)}
                                     >Add</Button>
                                 </TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
                 </Table>
+            ):(
+                <div className="flex max-h-60 items-center justify-center p-16">
+                    <p>Start your search!</p>
+                </div>
+            )}
+                
 
             </div>
             <div className="mt-4 flex items-center justify-between">
