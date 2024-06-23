@@ -7,8 +7,8 @@ export type Book = {
     key: string
     title: string
     author_name: string[]
-    first_publish_year: string
-    number_of_pages_median: string | null
+    first_publish_year: number
+    number_of_pages_median: number | null
     status: "done" | "inProgress" | "backlog"
 }
 
